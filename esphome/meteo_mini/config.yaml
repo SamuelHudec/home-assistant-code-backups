@@ -1,0 +1,187 @@
+substitutions:
+  device_name: meteo_station
+
+esphome:
+  name: ${device_name}
+  friendly_name: Meteo station
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret MS_api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret MS_ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Meteo-Station Fallback Hotspot"
+    password: !secret MS_ap_fallback_password
+
+captive_portal:
+
+i2c:
+  sda: 19
+  scl: 18
+  scan: true
+  id: bus_a
+
+# Enable I2C psubstitutions:
+  device_name: meteo_station
+
+esphome:
+  name: ${device_name}
+  friendly_name: Meteo station
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "HAPm6UvwPrFuSa3jiP7hdOje2gRxphJNxVFCjntLLKg="
+
+ota:
+  - platform: esphome
+    password: "a0f3c3f0a12ebbb1680cb2cddc673afc"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Meteo-Station Fallback Hotspot"
+    password: "MO2aHoSyUUpO"
+
+captive_portal:
+
+i2c:
+  sda: 19
+  scl: 18
+  scan: true
+  id: bus_a
+
+# Enable I2C power
+switch:
+  - platform: gpio
+    pin: GPIO3
+    id: my_output
+    restore_mode: ALWAYS_ON  # Keep the pin high after boot
+
+sensor:
+  - platform: bme680
+    temperature:
+      name: "${device_name} Temperature"
+      id: "${device_name}_Temperature"
+    pressure:
+      name: "${device_name} Pressure"
+      id: "${device_name}_Pressure"
+    humidity:
+      name: "${device_name} Humidity"
+      id: "${device_name}_Humidity"
+    gas_resistance:
+      name: "${device_name} Gas Resistance"
+      id: "${device_name}_Gas_Resistance"
+    address: 0x77
+    update_interval: 60s
+
+  - platform: sgp4x
+    voc:
+      name: "${device_name} VOC Index"
+      id: "${device_name}_VOC_Index"
+    nox:
+      name: "${device_name} NOx Index"
+      id: "${device_name}_NOx_Index"
+    compensation:
+      temperature_source: "${device_name}_Temperature"
+      humidity_source: "${device_name}_Humidity"
+    update_interval: 30s
+
+  - platform: adc
+    pin: GPIO0
+    name: "${device_name} Batery Level"
+    id: "${device_name}_Batery_Level"
+    entity_category: diagnostic
+    filters:
+      - multiply: 1.7693877551
+
+  - platform: wifi_signal
+    name: "${device_name} WiFi Signal"
+    update_interval: 60s
+    entity_category: "diagnostic"
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Meteo Mini IP"ower
+switch:
+  - platform: gpio
+    pin: GPIO3
+    id: my_output
+    restore_mode: ALWAYS_ON  # Keep the pin high after boot
+
+sensor:
+  - platform: bme680
+    temperature:
+      name: "${device_name} Temperature"
+      id: "${device_name}_Temperature"
+    pressure:
+      name: "${device_name} Pressure"
+      id: "${device_name}_Pressure"
+    humidity:
+      name: "${device_name} Humidity"
+      id: "${device_name}_Humidity"
+    gas_resistance:
+      name: "${device_name} Gas Resistance"
+      id: "${device_name}_Gas_Resistance"
+    address: 0x76
+    update_interval: 60s
+
+  - platform: sgp4x
+    voc:
+      name: "${device_name} VOC Index"
+      id: "${device_name}_VOC_Index"
+    nox:
+      name: "${device_name} NOx Index"
+      id: "${device_name}_NOx_Index"
+    compensation:
+      temperature_source: "${device_name}_Temperature"
+      humidity_source: "${device_name}_Humidity"
+    update_interval: 30s
+
+  - platform: adc
+    pin: GPIO0
+    name: "${device_name} Batery Level"
+    id: "${device_name}_Batery_Level"
+    entity_category: diagnostic
+    filters:
+      - multiply: 1.7693877551
+
+  - platform: wifi_signal
+    name: "${device_name} WiFi Signal"
+    update_interval: 60s
+    entity_category: "diagnostic"
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Meteo Mini IP"
