@@ -1,0 +1,17 @@
+- id: autoupdate_all_updates
+  alias: Autoupdate ALL updates at 3:30
+  description: Automaticaly update all components with state 'on'
+  trigger:
+    - platform: time
+      at: "03:30:00"
+  condition: []
+  action:
+    - repeat:
+        for_each: "{{ states.update | selectattr('state', 'eq', 'on') | list }}"
+        sequence:
+          - service: update.install
+            data:
+              backup: false
+            target:
+              entity_id: "{{ repeat.item.entity_id }}"
+  mode: single
