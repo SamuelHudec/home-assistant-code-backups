@@ -8,4 +8,5 @@
 - [Solar panel](https://www.laskakit.cz/solarni-panel-6v-2w/)
 
 ## Case
-...
+- [Main Parts](https://github.com/LaskaKit/Weather_Station_Mini/blob/main/3D/1x_All_Meteo_mini.3mf)
+- [Cage](https://www.printables.com/model/802218-meteostation-weather-shield-laskakit-aliexpress-st)
