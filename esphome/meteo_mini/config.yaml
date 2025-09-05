@@ -73,15 +73,28 @@ sensor:
     compensation:
       temperature_source: "${device_name}_Temperature"
       humidity_source: "${device_name}_Humidity"
-    update_interval: 30s
+    update_interval: 60s
 
   - platform: adc
     pin: GPIO0
-    name: "${device_name} Batery Level"
-    id: "${device_name}_Batery_Level"
+    name: "${device_name} Battery Level"
+    id: "${device_name}_Battery_Level"
     entity_category: diagnostic
     filters:
       - multiply: 1.7693877551
+    
+  - platform: template
+    name: "${device_name} Battery Percent"
+    id: "${device_name}_Battery_Percent"
+    unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
+    update_interval: 60s
+    lambda: |-
+      float voltage = id(${device_name}_Battery_Level).state;
+      float percent = (voltage - 3.0f) / (4.2f - 3.0f) * 100.0f;
+      percent = std::clamp(percent, 0.0f, 100.0f);
+      return percent;
 
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
