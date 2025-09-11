@@ -11,5 +11,5 @@ temperature and humidity senzor.
 - [Solar (sold)](https://www.laskakit.cz/solarni-panel-5v-7-5w-s-usb/)
 - [Pump](https://www.laskakit.cz/ponorne-mini-cerpadlo-ultra-tiche-dc-3-6v-120-l-h/)
 - [Water level Senzor](https://www.laskakit.cz/arduino-plovakovy-senzor-vodni-hladiny/)
-- [Temperature Senzor](https://www.laskakit.cz/arduino-senzor-tlaku--teploty-a-vlhkosti-bme280/)
+- [Temperature Senzor](https://www.laskakit.cz/laskakit-sht40-senzor-teploty-a-vlhkosti-vzduchu/)
 - [uŠup](https://www.laskakit.cz/--sup--stemma-qt--qwiic-jst-sh-4-pin-kabel-5cm/)
