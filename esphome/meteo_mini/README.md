@@ -18,3 +18,4 @@
 ## Case 3D models
 - [Main Parts](https://github.com/LaskaKit/Weather_Station_Mini/blob/main/3D/1x_All_Meteo_mini.3mf)
 - [Cage](https://www.printables.com/model/802218-meteostation-weather-shield-laskakit-aliexpress-st)
+- [Holder for solar panel](https://www.printables.com/model/25254-holder-for-solar-panel-110x60-mm)
