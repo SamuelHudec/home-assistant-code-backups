@@ -92,8 +92,7 @@ i2c:
   scan: true
   id: bus_a
 
-button:
-  - platform: restart
-    name: "Restart ${device_name}"
-    disabled_by_default: true
-    entity_category: diagnostic
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${device_name} IP"
