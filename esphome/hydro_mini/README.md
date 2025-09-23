@@ -13,3 +13,19 @@ temperature and humidity senzor.
 - [Water level Senzor](https://www.laskakit.cz/arduino-plovakovy-senzor-vodni-hladiny/)
 - [Temperature Senzor](https://www.laskakit.cz/laskakit-sht40-senzor-teploty-a-vlhkosti-vzduchu/)
 - [uŠup](https://www.laskakit.cz/--sup--stemma-qt--qwiic-jst-sh-4-pin-kabel-5cm/)
+
+
+## How to compile and install SW using ESPhome Web
+
+This project can be compiled and flashed directly from a YAML file using ESPHome Web. 
+No Home Assistant or local ESPHome installation is required.
+
+**Steps**
+1. Prepare your YAML file
+2. [Open ESPHome Web](https://web.esphome.io/?utm_source=chatgpt.com)
+3. Connect your ESP32-C3 and follow the instructions on web
+4. Compile & Flash
+  - Click Install → Pick a YAML file.
+  - Upload your yaml.
+  - ESPHome Web will compile it into a .bin firmware.
+  - Once done, click Install to flash it to the ESP32-C3.

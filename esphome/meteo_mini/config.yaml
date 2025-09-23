@@ -84,7 +84,7 @@ sensor:
     id: "${device_name}_Battery_Level"
     entity_category: diagnostic
     filters:
-      - multiply: 1.7693877551
+      - multiply: 4.624
     
   - platform: template
     name: "${device_name} Battery Percent"

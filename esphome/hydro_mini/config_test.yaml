@@ -1,0 +1,70 @@
+esphome:
+  name: hydro-test
+  friendly_name: Hydro Test
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+wifi:
+  ssid: "WIFI"
+  password: "HESLO"
+
+  ap:
+    ssid: "Hydro-Test-AP"
+    password: "12345678"
+
+logger:
+ota:
+  - platform: esphome
+    password: weed
+
+# Web rozhranie na testovanie
+web_server:
+  port: 80
+
+# MOSFET kanály (výstupy)
+switch:
+  - platform: gpio
+    id: pump_ch0
+    name: "MOSFET CH0"
+    pin: GPIO1
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: pump_ch1
+    name: "MOSFET CH1"
+    pin: GPIO6
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: pump_ch2
+    name: "MOSFET CH2"
+    pin: GPIO7
+    restore_mode: ALWAYS_OFF
+
+# Plavákový senzor hladiny vody (prvý voľný pin, napr. GPIO4)
+binary_sensor:
+  - platform: gpio
+    id: water_level
+    name: "Hladina vody"
+    pin:
+      number: GPIO4
+      mode:
+        input: true
+        pullup: true    # drží pin HIGH, plavák ťahá na GND
+    device_class: moisture
+
+i2c:
+  sda: GPIO8
+  scl: GPIO9
+  scan: true
+
+sensor:
+  - platform: sht4x
+    temperature:
+      name: "Hydro Teplota"
+    humidity:
+      name: "Hydro Vlhkosť"
+    update_interval: 10s
