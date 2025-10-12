@@ -22,10 +22,14 @@ No Home Assistant or local ESPHome installation is required.
 
 **Steps**
 1. Prepare your YAML file
-2. [Open ESPHome Web](https://web.esphome.io/?utm_source=chatgpt.com)
+2. [Open ESPHome Web](https://web.esphome.io)
 3. Connect your ESP32-C3 and follow the instructions on web
-4. Compile & Flash
-  - Click Install → Pick a YAML file.
+4. Compile
+  - Navigate to folder where you store `your.yaml`
+  - in terminal run: `docker run --rm -v "${PWD}":/config -it ghcr.io/esphome/esphome compile your.yaml`
+  - bin you can find: `.esphome/build/your/.pioenvs/your/firmware.bin`
+5. Flash
+  - Click Install → Pick a Bin file.
   - Upload your yaml.
   - ESPHome Web will compile it into a .bin firmware.
   - Once done, click Install to flash it to the ESP32-C3.

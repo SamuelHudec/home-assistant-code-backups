@@ -8,17 +8,19 @@ esp32:
     type: arduino
 
 wifi:
-  ssid: "WIFI"
-  password: "HESLO"
-
+  ssid: "nazov"
+  password: "heslo"
   ap:
-    ssid: "Hydro-Test-AP"
+    ssid: "Hydro-Test"
     password: "12345678"
 
+captive_portal:
+
 logger:
+
 ota:
   - platform: esphome
-    password: weed
+    password: ttrt
 
 # Web rozhranie na testovanie
 web_server:
@@ -29,7 +31,7 @@ switch:
   - platform: gpio
     id: pump_ch0
     name: "MOSFET CH0"
-    pin: GPIO1
+    pin: GPIO7
     restore_mode: ALWAYS_OFF
 
   - platform: gpio
@@ -41,16 +43,16 @@ switch:
   - platform: gpio
     id: pump_ch2
     name: "MOSFET CH2"
-    pin: GPIO7
+    pin: GPIO1
     restore_mode: ALWAYS_OFF
 
-# Plavákový senzor hladiny vody (prvý voľný pin, napr. GPIO4)
+# Plavákový senzor hladiny vody (work in progress)
 binary_sensor:
   - platform: gpio
     id: water_level
-    name: "Hladina vody"
+    name: "Water tank level"
     pin:
-      number: GPIO4
+      number: GPIO2
       mode:
         input: true
         pullup: true    # drží pin HIGH, plavák ťahá na GND
@@ -58,13 +60,16 @@ binary_sensor:
 
 i2c:
   sda: GPIO8
-  scl: GPIO9
+  scl: GPIO10
   scan: true
+  id: bus_a
 
 sensor:
   - platform: sht4x
     temperature:
-      name: "Hydro Teplota"
+      name: "Hydro temperature"
+      id: temperature
     humidity:
-      name: "Hydro Vlhkosť"
+      name: "Hydro humidity"
+      id: humidity
     update_interval: 10s

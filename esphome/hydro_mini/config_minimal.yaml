@@ -1,0 +1,16 @@
+esphome:
+  name: c3-test
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+logger:
+
+wifi:
+  ap:
+    ssid: "C3-Test-AP"
+    password: "12345678"
+
+captive_portal:

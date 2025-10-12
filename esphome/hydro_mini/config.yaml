@@ -1,0 +1,137 @@
+esphome:
+  name: hydro-mini
+  friendly_name: Hydro mini
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+logger:
+
+api:
+  encryption:
+    key: !secret HM_api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret HM_ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "Hydro-Mini Fallback Hotspot"
+    password: !secret HM_ap_fallback_password
+
+captive_portal:
+
+web_server:
+  port: 80
+
+switch:
+  - platform: gpio
+    id: pump_ch0
+    name: "MOSFET CH0"
+    pin: GPIO7
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: pump_ch1
+    name: "MOSFET CH1"
+    pin: GPIO6
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: pump_ch2
+    name: "MOSFET CH2"
+    pin: GPIO1
+    restore_mode: ALWAYS_OFF
+
+binary_sensor:
+  - platform: gpio
+    id: water_level
+    name: "Water tank level"
+    pin:
+      number: GPIO2
+      mode:
+        input: true
+        pullup: true
+    device_class: moisture
+    # Charging state (TP4054 CHRG ? GPIO4)
+  - platform: gpio
+    name: "Charging State"
+    pin:
+      number: GPIO4
+      mode:
+        input: true
+        pullup: true
+    device_class: battery_charging
+    filters:
+      - invert
+
+i2c:
+  sda: GPIO8
+  scl: GPIO10
+  scan: true
+  id: bus_a
+
+sensor:
+  - platform: sht4x
+    temperature:
+      name: "Hydro Temperature"
+      id: temperature
+    humidity:
+      name: "Hydro Humidity"
+      id: humidity
+    update_interval: 1h
+
+  - platform: adc
+    pin: GPIO0            # ADC_BAT from schematic
+    id: battery_voltage
+    name: "Battery Voltage"
+    attenuation: 11db
+    update_interval: 60s
+    filters:
+      - multiply: 1.77    # compensate voltage divider R1=1.3M, R5=1M
+    unit_of_measurement: "V"
+
+  - platform: template
+    name: "Battery Level"
+    id: battery_level
+    unit_of_measurement: "%"
+    lambda: |-
+      if (id(battery_voltage).state <= 3.2) return 0;
+      else if (id(battery_voltage).state >= 4.2) return 100;
+      else return (id(battery_voltage).state - 3.2) * 100.0 / (4.2 - 3.2);
+    update_interval: 60s
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: Europe/Bratislava
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 8,13,17
+        then:
+          - script.execute: run_pump_cycle
+
+script:
+  - id: run_pump_cycle
+    mode: restart
+    then:
+      # - if:
+      #     condition:
+      #       - binary_sensor.is_off: water_level   # off = OK, on = problém (uprav podľa montáže)
+      #     then:
+      #       - logger.log: "Tank OK -> starting pump cycle"
+      #     else:
+      #       - logger.log: "Tank LOW -> skipping pump cycle"
+      #       - script.stop: run_pump_cycle
+
+      - switch.turn_on: pump_ch1
+      - logger.log: "Automatic pump cycle started"
+      - delay: 2min
+      - switch.turn_off: pump_ch1
+      - logger.log: "Automatic pump cycle completed"
