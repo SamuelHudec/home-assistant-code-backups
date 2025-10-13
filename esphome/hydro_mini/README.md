@@ -20,7 +20,7 @@ temperature and humidity senzor.
 This project can be compiled and flashed directly from a YAML file using ESPHome Web. 
 No Home Assistant or local ESPHome installation is required.
 
-**Steps**
+**How to do:**
 1. Prepare your YAML file
 2. [Open ESPHome Web](https://web.esphome.io)
 3. Connect your ESP32-C3 and follow the instructions on web
