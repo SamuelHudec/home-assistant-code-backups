@@ -33,8 +33,21 @@ wifi:
 
 captive_portal:
 
-web_server:
-  port: 80
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_user
+  password: !secret mqtt_pass
+
+  on_message:
+    - topic: meteo/ota_mode
+      payload: "ON"
+      then:
+        - deep_sleep.prevent: deep_sleep_control
+
+deep_sleep:
+  id: deep_sleep_control
+  run_duration: 20s
+  sleep_duration: 10min
 
 i2c:
   sda: 19
@@ -42,12 +55,11 @@ i2c:
   scan: true
   id: bus_a
 
-# Enable I2C power
 switch:
   - platform: gpio
-    pin: GPIO3
+    pin: GPIO3 
     id: my_output
-    restore_mode: ALWAYS_ON  # Keep the pin high after boot
+    restore_mode: ALWAYS_ON
 
 sensor:
   - platform: bme680
@@ -64,47 +76,4 @@ sensor:
       name: "${device_name} Gas Resistance"
       id: "${device_name}_Gas_Resistance"
     address: 0x77
-    update_interval: 60s
-
-  - platform: sgp4x
-    voc:
-      name: "${device_name} VOC Index"
-      id: "${device_name}_VOC_Index"
-    nox:
-      name: "${device_name} NOx Index"
-      id: "${device_name}_NOx_Index"
-    compensation:
-      temperature_source: "${device_name}_Temperature"
-      humidity_source: "${device_name}_Humidity"
-    update_interval: 60s
-
-  - platform: adc
-    pin: GPIO0
-    name: "${device_name} Battery Level"
-    id: "${device_name}_Battery_Level"
-    entity_category: diagnostic
-    filters:
-      - multiply: 4.624
-    
-  - platform: template
-    name: "${device_name} Battery Percent"
-    id: "${device_name}_Battery_Percent"
-    unit_of_measurement: "%"
-    device_class: battery
-    state_class: measurement
-    update_interval: 60s
-    lambda: |-
-      float voltage = id(${device_name}_Battery_Level).state;
-      float percent = (voltage - 3.0f) / (4.2f - 3.0f) * 100.0f;
-      percent = std::clamp(percent, 0.0f, 100.0f);
-      return percent;
-
-  - platform: wifi_signal
-    name: "${device_name} WiFi Signal"
-    update_interval: 60s
-    entity_category: "diagnostic"
-
-text_sensor:
-  - platform: wifi_info
-    ip_address:
-      name: "Meteo Mini IP"
+    update_interval: 10s
